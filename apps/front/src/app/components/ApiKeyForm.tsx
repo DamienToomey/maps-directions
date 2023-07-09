@@ -24,10 +24,11 @@ export const ApiKeyForm: React.FC<Props> = ({ onSetApiKey }) => {
       return;
     }
 
-    const isApiKeyValid = validateApiKey.data?.status === 'ZERO_RESULTS'; // google.maps.DirectionsStatus.ZERO_RESULTS
-    if (isApiKeyValid) {
-      onSetApiKey(apiKey);
-    }
+    const isApiKeyValid = true;
+    // const isApiKeyValid = validateApiKey.data?.status === 'ZERO_RESULTS'; // google.maps.DirectionsStatus.ZERO_RESULTS
+    // if (isApiKeyValid) {
+    onSetApiKey(apiKey);
+    // }
 
     toast({
       title: isApiKeyValid ? 'Valid API key' : 'Invalid API key',

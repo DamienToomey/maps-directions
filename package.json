@@ -9,7 +9,8 @@
     "test": "nx test",
     "start:maps-directions:node": "npx nx run maps-directions:run",
     "start:maps-directions:react": "npx nx serve front --hmr",
-    "build:maps-directions:react": "npx nx build front --configuration=production"
+    "build:maps-directions:react": "npx nx build front --configuration=production",
+    "preview:maps-directions:react": "npx nx run front:preview --configuration=production"
   },
   "private": true,
   "devDependencies": {
