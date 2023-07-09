@@ -89,6 +89,13 @@ npm i react-hook-form
 npm i -D  dotenv
 ```
 
+### Deploy to GitHub Pages
+
+- follow instructions in https://github.com/DamienToomey/memory#xii-deployment-on-github-pages
+- go to https://github.com/DamienToomey/maps-directions/settings/actions > Workflow permissions
+  - select "Read and write permissions" to allow the GitHub action to push the build bundle to the `gh-pages` branch
+- in `package.json`, set `baseHref` to the correct folder path which contains `index.html` as explained in https://emilyxiong.medium.com/deploy-a-nx-react-app-to-github-pages-a83de7551ec0
+
 ### References
 
 - https://stackoverflow.com/questions/14300217/get-the-city-names-the-google-map-route-going-through
