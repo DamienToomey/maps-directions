@@ -2,6 +2,7 @@
   "name": "maps-directions",
   "version": "0.0.0",
   "license": "MIT",
+  "homepage": "https://damientoomey.github.io/maps-directions/app",
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
