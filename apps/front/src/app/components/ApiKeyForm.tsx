@@ -1,13 +1,7 @@
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  VStack,
-  useToast,
-} from '@chakra-ui/react';
-import { useCallback, useEffect, useState } from 'react';
+import { Button, FormControl, FormLabel, VStack } from '@chakra-ui/react';
+import { useCallback, useState } from 'react';
 
-import { useValidateApiKey } from '../queries/validate-api-key.query';
+// import { useValidateApiKey } from '../queries/validate-api-key.query';
 import { PasswordInput } from './PasswordInput';
 
 interface Props {
@@ -15,33 +9,33 @@ interface Props {
 }
 
 export const ApiKeyForm: React.FC<Props> = ({ onSetApiKey }) => {
-  const toast = useToast();
+  // const toast = useToast();
   const [apiKey, setApiKey] = useState('');
-  const validateApiKey = useValidateApiKey(apiKey);
+  // const validateApiKey = useValidateApiKey(apiKey);
 
-  useEffect(() => {
-    if (!validateApiKey.isFetched) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!validateApiKey.isFetched) {
+  //     return;
+  //   }
 
-    const isApiKeyValid = true;
-    // const isApiKeyValid = validateApiKey.data?.status === 'ZERO_RESULTS'; // google.maps.DirectionsStatus.ZERO_RESULTS
-    // if (isApiKeyValid) {
-    onSetApiKey(apiKey);
-    // }
+  //   const isApiKeyValid = validateApiKey.data?.status === 'ZERO_RESULTS'; // google.maps.DirectionsStatus.ZERO_RESULTS
+  //   if (isApiKeyValid) {
+  //     onSetApiKey(apiKey);
+  //   }
 
-    toast({
-      title: isApiKeyValid ? 'Valid API key' : 'Invalid API key',
-      status: isApiKeyValid ? 'success' : 'error',
-      duration: 2000,
-      isClosable: true,
-      position: 'top-right',
-    });
-  }, [validateApiKey, apiKey, onSetApiKey, toast]);
+  //   toast({
+  //     title: isApiKeyValid ? 'Valid API key' : 'Invalid API key',
+  //     status: isApiKeyValid ? 'success' : 'error',
+  //     duration: 2000,
+  //     isClosable: true,
+  //     position: 'top-right',
+  //   });
+  // }, [validateApiKey, apiKey, onSetApiKey, toast]);
 
   const onValidateApiKey = useCallback(() => {
-    validateApiKey.refetch();
-  }, [validateApiKey]);
+    onSetApiKey(apiKey);
+    // validateApiKey.refetch();
+  }, [onSetApiKey, apiKey]); // validateApiKey
 
   const onApiKeyChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
