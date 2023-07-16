@@ -4,12 +4,13 @@ type K = LatLngLiteral | google.maps.LatLng;
 export declare abstract class MapsDirections<T extends GeocodeResult[] | google.maps.GeocoderResult[], U extends DirectionsResponseData | google.maps.DirectionsResult> {
     getCoordinates(directionsResponseData: U): K[];
     getTownNames(latLngs: K[]): Promise<string[]>;
-    protected abstract getGeocorderResults(latLng: K): Promise<T>;
     abstract findRoute(towns: string[]): Promise<U>;
     abstract main(towns: string[]): Promise<{
         towns: string[];
         status?: unknown;
     }>;
+    protected abstract getGeocorderResults(latLng: K): Promise<T>;
+    private getPoints;
     private rad;
     private getHaversineDistance;
     private getTownName;

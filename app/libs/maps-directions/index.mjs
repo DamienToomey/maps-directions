@@ -4327,17 +4327,18 @@ var js = function(e, r) {
 };
 class Us {
   getCoordinates(r) {
-    const n = [];
-    for (const t of r.routes[0].legs)
-      for (const o of t.steps)
-        n.push(this.getCoordinatesAlongPolyline(o));
-    return n.flat(2);
+    const n = r.routes[0].overview_polyline, t = this.getPoints(n);
+    return this.getCoordinatesAlongPolyline(t);
   }
   async getTownNames(r) {
     const n = r.map(async (i) => await this.getTownName(i)), o = (await Promise.all(n)).filter(
       (i) => i != null
     );
     return this.removeDuplicates(o);
+  }
+  getPoints(r) {
+    let n = "";
+    return typeof r == "string" ? n = r : n = r.points, n;
   }
   rad(r) {
     return r * Math.PI / 180;
@@ -4372,14 +4373,11 @@ class Us {
     );
   }
   getCoordinatesAlongPolyline(r) {
-    if (r.polyline?.points == null || r.distance?.value == null)
-      return [];
-    const n = js(r.polyline.points, 5), t = [r.start_location], o = 1e3;
+    const n = js(r, 5), t = [], o = 1e3;
     let i, a = 0;
-    if (r.distance.value > o)
-      for (const c of n)
-        i && (a += this.getHaversineDistance(i, c), a >= o && (t.push({ lat: i[0], lng: i[1] }), a = 0)), i = c;
-    return t.push(r.end_location), t;
+    for (const c of n)
+      i && (a += this.getHaversineDistance(i, c), a >= o && (t.push({ lat: i[0], lng: i[1] }), a = 0)), i = c;
+    return t;
   }
 }
 class Hn extends Us {
