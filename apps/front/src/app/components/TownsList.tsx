@@ -6,9 +6,11 @@ interface Props {
 
 export const TownsList: React.FC<Props> = ({ towns }) => {
   return (
-    <OrderedList>
+    <OrderedList listStyleType="none" margin={0}>
       {towns.map((town, i) => (
-        <ListItem key={`${town}-${i}`}>{town}</ListItem>
+        <ListItem key={`${town}-${i}`}>
+          {i}. {town}
+        </ListItem>
       ))}
     </OrderedList>
   );

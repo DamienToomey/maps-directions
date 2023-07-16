@@ -56,7 +56,10 @@ export const Form: React.FC = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        style={{ width: '100%', marginBottom: '2rem' }}
+      >
         <VStack align="start">
           <FormLabel>Fill the form to get directions</FormLabel>
 

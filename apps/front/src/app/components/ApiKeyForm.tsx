@@ -47,7 +47,7 @@ export const ApiKeyForm: React.FC<Props> = ({ onSetApiKey }) => {
   return (
     <div>
       <FormControl>
-        <VStack width="50%" height="50%" alignContent="center">
+        <VStack alignContent="center">
           <FormLabel>Google Maps API Key</FormLabel>
           <PasswordInput
             placeholder="Enter your API Key"
