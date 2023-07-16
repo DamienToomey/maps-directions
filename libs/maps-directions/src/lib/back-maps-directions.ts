@@ -76,6 +76,8 @@ const main = async () => {
     'Louviers France',
     'Saint Etienne du Vauvray France',
     'Le Mesnil Jourdain France',
+    // 'Sommaisne France',
+    // 'Bar le duc France',
   ];
 
   const mapsDirections = new BackMapsDirections();

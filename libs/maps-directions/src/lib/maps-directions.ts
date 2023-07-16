@@ -4,7 +4,6 @@
 import {
   AddressType,
   DirectionsResponseData,
-  DirectionsStep,
   GeocodeResult,
   LatLngLiteral,
 } from '@googlemaps/google-maps-services-js';
@@ -18,15 +17,9 @@ export abstract class MapsDirections<
   U extends DirectionsResponseData | google.maps.DirectionsResult
 > {
   public getCoordinates(directionsResponseData: U): K[] {
-    const latLngs: K[][] = [];
-
-    for (const leg of directionsResponseData.routes[0].legs) {
-      for (const step of leg.steps) {
-        latLngs.push(this.getCoordinatesAlongPolyline(step));
-      }
-    }
-
-    return latLngs.flat(2);
+    const overviewPolyline = directionsResponseData.routes[0].overview_polyline;
+    const points = this.getPoints(overviewPolyline);
+    return this.getCoordinatesAlongPolyline(points);
   }
 
   public async getTownNames(latLngs: K[]): Promise<string[]> {
@@ -41,13 +34,27 @@ export abstract class MapsDirections<
     return this.removeDuplicates(fileteredFullAddresses);
   }
 
-  protected abstract getGeocorderResults(latLng: K): Promise<T>;
-
   public abstract findRoute(towns: string[]): Promise<U>;
 
   public abstract main(
     towns: string[]
   ): Promise<{ towns: string[]; status?: unknown }>;
+
+  protected abstract getGeocorderResults(latLng: K): Promise<T>;
+
+  private getPoints(overviewPolyline: string | { points: string }): string {
+    let points = '';
+
+    if (typeof overviewPolyline === 'string') {
+      // front api
+      points = overviewPolyline;
+    } else {
+      // back api
+      points = overviewPolyline.points;
+    }
+
+    return points;
+  }
 
   private rad(x: number): number {
     return (x * Math.PI) / 180;
@@ -111,16 +118,10 @@ export abstract class MapsDirections<
     );
   }
 
-  private getCoordinatesAlongPolyline(
-    step: DirectionsStep | google.maps.DirectionsStep
-  ): K[] {
-    if (step.polyline?.points == null || step.distance?.value == null) {
-      return [];
-    }
+  private getCoordinatesAlongPolyline(points: string): K[] {
+    const polyline = decode(points, 5);
 
-    const polyline = decode(step.polyline.points, 5);
-
-    const coordinates: K[] = [step.start_location];
+    const coordinates: K[] = [];
 
     // threshold at which we add a lat/long point
     const distanceThreshold = 1000; // meters
@@ -129,22 +130,19 @@ export abstract class MapsDirections<
 
     let distance = 0;
 
-    if (step.distance.value > distanceThreshold) {
-      for (const point of polyline) {
-        if (previousPoint) {
-          distance += this.getHaversineDistance(previousPoint, point);
+    for (const point of polyline) {
+      if (previousPoint) {
+        distance += this.getHaversineDistance(previousPoint, point);
 
-          if (distance >= distanceThreshold) {
-            coordinates.push({ lat: previousPoint[0], lng: previousPoint[1] });
-            distance = 0;
-          }
+        if (distance >= distanceThreshold) {
+          coordinates.push({ lat: previousPoint[0], lng: previousPoint[1] });
+          distance = 0;
         }
-
-        previousPoint = point;
       }
+
+      previousPoint = point;
     }
 
-    coordinates.push(step.end_location);
     return coordinates;
   }
 }
