@@ -1,0 +1,7 @@
+/**
+ * hide InfoWindow close button
+ * https://github.com/tomchentw/react-google-maps/issues/931
+ */
+.gm-ui-hover-effect {
+  visibility: hidden;
+}
