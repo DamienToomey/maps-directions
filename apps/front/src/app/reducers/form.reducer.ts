@@ -11,44 +11,59 @@ const getInputKey = (index: number) => {
 };
 
 export interface FormState {
+  apiKey: string | undefined;
   towns: Town[];
   totalDistance: string | undefined;
   inputKeys: string[];
+  center: google.maps.LatLng | undefined;
+  zoom: number | undefined;
 }
 
 export const INITIAL_FORM_STATE: FormState = {
+  apiKey: undefined,
   towns: [],
   totalDistance: undefined,
   inputKeys: [getInputKey(0), getInputKey(1)],
+  center: undefined,
+  zoom: undefined,
 };
 
 export type FormActionType =
+  | 'setApiKey'
   | 'addInput'
   | 'removeInput'
   | 'setTowns'
-  | 'setTotalDistance';
+  | 'setTotalDistance'
+  | 'setCenter'
+  | 'setZoom';
 
 export interface FormAction<T extends FormActionType, P> {
   type: T;
   payload: P;
 }
 
+export type SetApiKeyAction = FormAction<'setApiKey', { apiKey: string }>;
 export type AddInputAction = FormAction<'addInput', undefined>;
 export type RemoveInputAction = FormAction<
   'removeInput',
   { inputKeyToDelete: string }
 >;
 export type SetTownsAction = FormAction<'setTowns', { towns: Town[] }>;
-export type setTotalDistanceAction = FormAction<
+export type SetTotalDistanceAction = FormAction<
   'setTotalDistance',
   { totalDistance: string }
 >;
+export type SetCenter = FormAction<'setCenter', { center: google.maps.LatLng }>;
+export type SetZoom = FormAction<'setZoom', { zoom: number }>;
 
 export type FormActions =
+  | SetApiKeyAction
   | AddInputAction
   | RemoveInputAction
   | SetTownsAction
-  | setTotalDistanceAction;
+  | SetTotalDistanceAction
+  | SetCenter
+  | SetZoom;
 
 export const formReducer: Reducer<FormState, FormActions> = (
   state,
@@ -56,6 +71,11 @@ export const formReducer: Reducer<FormState, FormActions> = (
 ): FormState => {
   const { type, payload } = action;
   switch (type) {
+    case 'setApiKey':
+      return {
+        ...state,
+        apiKey: payload.apiKey,
+      };
     case 'addInput':
       return {
         ...state,
@@ -80,6 +100,16 @@ export const formReducer: Reducer<FormState, FormActions> = (
       return {
         ...state,
         totalDistance: payload.totalDistance,
+      };
+    case 'setCenter':
+      return {
+        ...state,
+        center: payload.center,
+      };
+    case 'setZoom':
+      return {
+        ...state,
+        zoom: payload.zoom,
       };
   }
 };

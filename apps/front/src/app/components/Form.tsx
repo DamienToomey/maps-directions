@@ -8,6 +8,7 @@ import { useFormContext, useFormDispatch } from '../contexts/form.context';
 import InputForm from './InputsForm';
 import { FrontMapsDirections } from '@maps-directions/maps-directions';
 import { Map } from './Map';
+import { Document } from './Document';
 
 export const Form: React.FC = () => {
   const { inputKeys, towns, totalDistance } = useFormContext();
@@ -91,6 +92,8 @@ export const Form: React.FC = () => {
       ></TownNamesList>
 
       <Map towns={towns}></Map>
+
+      <Document towns={towns} />
     </>
   );
 };

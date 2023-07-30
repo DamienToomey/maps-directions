@@ -11,6 +11,7 @@ interface Props {
 export const ApiKeyForm: React.FC<Props> = ({ onSetApiKey }) => {
   // const toast = useToast();
   const [apiKey, setApiKey] = useState('');
+
   // const validateApiKey = useValidateApiKey(apiKey);
 
   // useEffect(() => {

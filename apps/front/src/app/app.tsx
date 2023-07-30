@@ -2,18 +2,22 @@ import Form from './components/Form';
 
 import { Spinner } from '@chakra-ui/react';
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import ApiKeyForm from './components/ApiKeyForm';
-import { FormContextProvider } from './contexts/form.context';
+import { useFormContext, useFormDispatch } from './contexts/form.context';
 
 export function App() {
-  const [apiKey, setApiKey] = useState('');
+  const { apiKey } = useFormContext();
+  const dispatch = useFormDispatch();
 
   const onSetApiKey = useCallback(
     (apiKey: string) => {
-      setApiKey(apiKey);
+      dispatch({
+        type: 'setApiKey',
+        payload: { apiKey },
+      });
     },
-    [setApiKey]
+    [dispatch]
   );
 
   const render = (status: Status) => {
@@ -23,11 +27,7 @@ export function App() {
       case Status.FAILURE:
         return <div>Error</div>;
       case Status.SUCCESS:
-        return (
-          <FormContextProvider>
-            <Form />
-          </FormContextProvider>
-        );
+        return <Form />;
     }
   };
 

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import './Map.css';
 import { Town } from '@maps-directions/maps-directions';
 import { usePreventScroll } from './usePreventScroll';
+import { useFormDispatch } from '../contexts/form.context';
 
 const mapStyles = {
   width: '100%',
@@ -21,19 +22,25 @@ interface Props {
 // https://developers.google.com/maps/documentation/javascript/coordinates
 export const Map: React.FC<Props> = ({ towns }) => {
   const ref = usePreventScroll<HTMLDivElement>();
+  const dispatch = useFormDispatch();
 
   useEffect(() => {
-    if (towns.length === 0) {
+    const element = document.getElementById('map');
+    if (element == null || towns.length === 0) {
       return;
     }
 
-    const map = new google.maps.Map(
-      document.getElementById('map') as HTMLElement
-    );
+    const map = new google.maps.Map(element);
+
+    google.maps.event.addListenerOnce(map, 'bounds_changed', function () {
+      dispatch({ type: 'setZoom', payload: { zoom: map.getZoom() ?? 0 } });
+    });
 
     const bounds = getBounds(towns);
     map.setCenter(bounds.getCenter());
-    map.fitBounds(bounds);
+    map.fitBounds(bounds); // asynchronous
+
+    dispatch({ type: 'setCenter', payload: { center: bounds.getCenter() } });
 
     for (const [i, town] of towns.entries()) {
       // const coordInfoWindow = new google.maps.InfoWindow();
@@ -47,9 +54,11 @@ export const Map: React.FC<Props> = ({ towns }) => {
         label: i.toString(),
       });
     }
-  }, [towns]);
+  }, [towns, dispatch]);
 
   return <div ref={ref} id="map" style={mapStyles}></div>;
 };
+
+//markers=color:green%7Clabel:G%7C40.711614
 
 export default Map;
