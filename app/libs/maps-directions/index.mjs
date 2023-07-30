@@ -485,15 +485,15 @@ const Ht = Ui, tn = {
   silentJSONParsing: !0,
   forcedJSONParsing: !0,
   clarifyTimeoutError: !1
-}, Pi = typeof URLSearchParams < "u" ? URLSearchParams : Nt, Ti = typeof FormData < "u" ? FormData : null, Ii = typeof Blob < "u" ? Blob : null, Di = (() => {
+}, Ti = typeof URLSearchParams < "u" ? URLSearchParams : Nt, Pi = typeof FormData < "u" ? FormData : null, Ii = typeof Blob < "u" ? Blob : null, Di = (() => {
   let e;
   return typeof navigator < "u" && ((e = navigator.product) === "ReactNative" || e === "NativeScript" || e === "NS") ? !1 : typeof window < "u" && typeof document < "u";
 })(), Fi = (() => typeof WorkerGlobalScope < "u" && // eslint-disable-next-line no-undef
 self instanceof WorkerGlobalScope && typeof self.importScripts == "function")(), M = {
   isBrowser: !0,
   classes: {
-    URLSearchParams: Pi,
-    FormData: Ti,
+    URLSearchParams: Ti,
+    FormData: Pi,
     Blob: Ii
   },
   isStandardBrowserEnv: Di,
@@ -2293,7 +2293,7 @@ function St(e, r) {
   var n = e.slice(0, r), t = e.slice(r);
   return Array.prototype.concat.call([], St(n), St(t));
 }
-function Po(e) {
+function To(e) {
   try {
     return decodeURIComponent(e);
   } catch {
@@ -2302,7 +2302,7 @@ function Po(e) {
     return e;
   }
 }
-function To(e) {
+function Po(e) {
   for (var r = {
     "%FE%FF": "��",
     "%FF%FE": "��"
@@ -2310,7 +2310,7 @@ function To(e) {
     try {
       r[n[0]] = decodeURIComponent(n[0]);
     } catch {
-      var t = Po(n[0]);
+      var t = To(n[0]);
       t !== n[0] && (r[n[0]] = t);
     }
     n = tr.exec(e);
@@ -2328,7 +2328,7 @@ var Io = function(e) {
   try {
     return e = e.replace(/\+/g, " "), decodeURIComponent(e);
   } catch {
-    return To(e);
+    return Po(e);
   }
 }, Do = (e, r) => {
   if (!(typeof e == "string" && typeof r == "string"))
@@ -3075,15 +3075,15 @@ function ea() {
     e.timezone = o;
   }(rt)), rt;
 }
-var Pt = { exports: {} }, Sn = function(r, n) {
+var Tt = { exports: {} }, Sn = function(r, n) {
   return function() {
     for (var o = new Array(arguments.length), i = 0; i < o.length; i++)
       o[i] = arguments[i];
     return r.apply(n, o);
   };
-}, ta = Sn, Tt = Object.prototype.toString, It = function(e) {
+}, ta = Sn, Pt = Object.prototype.toString, It = function(e) {
   return function(r) {
-    var n = Tt.call(r);
+    var n = Pt.call(r);
     return e[n] || (e[n] = n.slice(8, -1).toLowerCase());
   };
 }(/* @__PURE__ */ Object.create(null));
@@ -3123,14 +3123,14 @@ function he(e) {
 }
 var aa = X("Date"), sa = X("File"), ua = X("Blob"), ca = X("FileList");
 function Ft(e) {
-  return Tt.call(e) === "[object Function]";
+  return Pt.call(e) === "[object Function]";
 }
 function la(e) {
   return wn(e) && Ft(e.pipe);
 }
 function fa(e) {
   var r = "[object FormData]";
-  return e && (typeof FormData == "function" && e instanceof FormData || Tt.call(e) === r || Ft(e.toString) && e.toString() === r);
+  return e && (typeof FormData == "function" && e instanceof FormData || Pt.call(e) === r || Ft(e.toString) && e.toString() === r);
 }
 var da = X("URLSearchParams");
 function ha(e) {
@@ -3197,7 +3197,7 @@ var Ea = function(e) {
   return function(r) {
     return e && r instanceof e;
   };
-}(typeof Uint8Array < "u" && Object.getPrototypeOf(Uint8Array)), T = {
+}(typeof Uint8Array < "u" && Object.getPrototypeOf(Uint8Array)), P = {
   isArray: Dt,
   isArrayBuffer: Rn,
   isBuffer: ra,
@@ -3228,7 +3228,7 @@ var Ea = function(e) {
   toArray: ba,
   isTypedArray: Ea,
   isFileList: ca
-}, K = T;
+}, K = P;
 function yr(e) {
   return encodeURIComponent(e).replace(/%3A/gi, ":").replace(/%24/g, "$").replace(/%2C/gi, ",").replace(/%20/g, "+").replace(/%5B/gi, "[").replace(/%5D/gi, "]");
 }
@@ -3253,7 +3253,7 @@ var An = function(r, n, t) {
     a !== -1 && (r = r.slice(0, a)), r += (r.indexOf("?") === -1 ? "?" : "&") + o;
   }
   return r;
-}, Oa = T;
+}, Oa = P;
 function Ne() {
   this.handlers = [];
 }
@@ -3273,11 +3273,11 @@ Ne.prototype.forEach = function(r) {
     t !== null && r(t);
   });
 };
-var Sa = Ne, Ra = T, wa = function(r, n) {
+var Sa = Ne, Ra = P, wa = function(r, n) {
   Ra.forEach(r, function(o, i) {
     i !== n && i.toUpperCase() === n.toUpperCase() && (r[n] = o, delete r[i]);
   });
-}, Nn = T;
+}, Nn = P;
 function ee(e, r, n, t, o) {
   Error.call(this), this.message = e, this.name = "AxiosError", r && (this.code = r), n && (this.config = n), t && (this.request = t), o && (this.response = o);
 }
@@ -3330,7 +3330,7 @@ var ie = ee, Un = {
   silentJSONParsing: !0,
   forcedJSONParsing: !0,
   clarifyTimeoutError: !1
-}, $ = T;
+}, $ = P;
 function Aa(e, r) {
   r = r || new FormData();
   var n = [];
@@ -3362,7 +3362,7 @@ function Aa(e, r) {
   }
   return o(e), r;
 }
-var Pn = Aa, nt = ie, Tn = function(r, n, t) {
+var Tn = Aa, nt = ie, Pn = function(r, n, t) {
   var o = t.config.validateStatus;
   !t.status || !o || o(t.status) ? r(t) : n(new nt(
     "Request failed with status code " + t.status,
@@ -3376,7 +3376,7 @@ function Na() {
   if (gr)
     return it;
   gr = 1;
-  var e = T;
+  var e = P;
   return it = e.isStandardBrowserEnv() ? (
     // Standard browser envs support document.cookie
     function() {
@@ -3413,14 +3413,14 @@ var Ca = function(r) {
   return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(r);
 }, ja = function(r, n) {
   return n ? r.replace(/\/+$/, "") + "/" + n.replace(/^\/+/, "") : r;
-}, Ua = Ca, Pa = ja, In = function(r, n) {
-  return r && !Ua(n) ? Pa(r, n) : n;
+}, Ua = Ca, Ta = ja, In = function(r, n) {
+  return r && !Ua(n) ? Ta(r, n) : n;
 }, ot, vr;
-function Ta() {
+function Pa() {
   if (vr)
     return ot;
   vr = 1;
-  var e = T, r = [
+  var e = P, r = [
     "age",
     "authorization",
     "content-length",
@@ -3456,7 +3456,7 @@ function Ia() {
   if (br)
     return at;
   br = 1;
-  var e = T;
+  var e = P;
   return at = e.isStandardBrowserEnv() ? (
     // Standard browser envs have full support of the APIs needed to test
     // whether the request URL is of the same origin as current location.
@@ -3494,7 +3494,7 @@ function Ce() {
   if (Er)
     return st;
   Er = 1;
-  var e = ie, r = T;
+  var e = ie, r = P;
   function n(t) {
     e.call(this, t ?? "canceled", e.ERR_CANCELED), this.name = "CanceledError";
   }
@@ -3514,7 +3514,7 @@ function Rr() {
   if (Sr)
     return ct;
   Sr = 1;
-  var e = T, r = Tn, n = Na(), t = An, o = In, i = Ta(), a = Ia(), c = Un, s = ie, u = Ce(), f = Da();
+  var e = P, r = Pn, n = Na(), t = An, o = In, i = Pa(), a = Ia(), c = Un, s = ie, u = Ce(), f = Da();
   return ct = function(p) {
     return new Promise(function(b, O) {
       var w = p.data, A = p.headers, l = p.responseType, d;
@@ -3539,10 +3539,10 @@ function Rr() {
             config: p,
             request: h
           };
-          r(function(Te) {
-            b(Te), _();
-          }, function(Te) {
-            O(Te), _();
+          r(function(Pe) {
+            b(Pe), _();
+          }, function(Pe) {
+            O(Pe), _();
           }, G), h = null;
         }
       }
@@ -3582,20 +3582,20 @@ var lt, wr;
 function Fa() {
   return wr || (wr = 1, lt = null), lt;
 }
-var P = T, Ar = wa, Nr = ie, Ba = Un, La = Pn, za = {
+var T = P, Ar = wa, Nr = ie, Ba = Un, La = Tn, za = {
   "Content-Type": "application/x-www-form-urlencoded"
 };
 function Cr(e, r) {
-  !P.isUndefined(e) && P.isUndefined(e["Content-Type"]) && (e["Content-Type"] = r);
+  !T.isUndefined(e) && T.isUndefined(e["Content-Type"]) && (e["Content-Type"] = r);
 }
 function $a() {
   var e;
   return (typeof XMLHttpRequest < "u" || typeof process < "u" && Object.prototype.toString.call(process) === "[object process]") && (e = Rr()), e;
 }
 function qa(e, r, n) {
-  if (P.isString(e))
+  if (T.isString(e))
     try {
-      return (r || JSON.parse)(e), P.trim(e);
+      return (r || JSON.parse)(e), T.trim(e);
     } catch (t) {
       if (t.name !== "SyntaxError")
         throw t;
@@ -3606,14 +3606,14 @@ var je = {
   transitional: Ba,
   adapter: $a(),
   transformRequest: [function(r, n) {
-    if (Ar(n, "Accept"), Ar(n, "Content-Type"), P.isFormData(r) || P.isArrayBuffer(r) || P.isBuffer(r) || P.isStream(r) || P.isFile(r) || P.isBlob(r))
+    if (Ar(n, "Accept"), Ar(n, "Content-Type"), T.isFormData(r) || T.isArrayBuffer(r) || T.isBuffer(r) || T.isStream(r) || T.isFile(r) || T.isBlob(r))
       return r;
-    if (P.isArrayBufferView(r))
+    if (T.isArrayBufferView(r))
       return r.buffer;
-    if (P.isURLSearchParams(r))
+    if (T.isURLSearchParams(r))
       return Cr(n, "application/x-www-form-urlencoded;charset=utf-8"), r.toString();
-    var t = P.isObject(r), o = n && n["Content-Type"], i;
-    if ((i = P.isFileList(r)) || t && o === "multipart/form-data") {
+    var t = T.isObject(r), o = n && n["Content-Type"], i;
+    if ((i = T.isFileList(r)) || t && o === "multipart/form-data") {
       var a = this.env && this.env.FormData;
       return La(i ? { "files[]": r } : r, a && new a());
     } else if (t || o === "application/json")
@@ -3622,7 +3622,7 @@ var je = {
   }],
   transformResponse: [function(r) {
     var n = this.transitional || je.transitional, t = n && n.silentJSONParsing, o = n && n.forcedJSONParsing, i = !t && this.responseType === "json";
-    if (i || o && P.isString(r) && r.length)
+    if (i || o && T.isString(r) && r.length)
       try {
         return JSON.parse(r);
       } catch (a) {
@@ -3652,13 +3652,13 @@ var je = {
     }
   }
 };
-P.forEach(["delete", "get", "head"], function(r) {
+T.forEach(["delete", "get", "head"], function(r) {
   je.headers[r] = {};
 });
-P.forEach(["post", "put", "patch"], function(r) {
-  je.headers[r] = P.merge(za);
+T.forEach(["post", "put", "patch"], function(r) {
+  je.headers[r] = T.merge(za);
 });
-var Ue = je, Ma = T, ka = Ue, Dn = function(r, n, t) {
+var Ue = je, Ma = P, ka = Ue, Dn = function(r, n, t) {
   var o = this || ka;
   return Ma.forEach(t, function(a) {
     r = a.call(o, r, n);
@@ -3669,7 +3669,7 @@ function Fn() {
     return !!(r && r.__CANCEL__);
   }), ft;
 }
-var Ur = T, dt = Dn, xa = Fn(), Ha = Ue, Wa = Ce();
+var Ur = P, dt = Dn, xa = Fn(), Ha = Ue, Wa = Ce();
 function ht(e) {
   if (e.cancelToken && e.cancelToken.throwIfRequested(), e.signal && e.signal.aborted)
     throw new Wa();
@@ -3706,7 +3706,7 @@ var Ga = function(r) {
       r.transformResponse
     ))), Promise.reject(o);
   });
-}, B = T, Bn = function(r, n) {
+}, B = P, Bn = function(r, n) {
   n = n || {};
   var t = {};
   function o(f, m) {
@@ -3769,9 +3769,9 @@ var Ga = function(r) {
     var p = u[m] || i, E = p(m);
     B.isUndefined(E) && p !== s || (t[m] = E);
   }), t;
-}, mt, Pr;
+}, mt, Tr;
 function Ln() {
-  return Pr || (Pr = 1, mt = {
+  return Tr || (Tr = 1, mt = {
     version: "0.27.2"
   }), mt;
 }
@@ -3781,7 +3781,7 @@ var Xa = Ln().version, W = ie, Lt = {};
     return typeof t === e || "a" + (r < 1 ? "n " : " ") + e;
   };
 });
-var Tr = {};
+var Pr = {};
 Lt.transitional = function(r, n, t) {
   function o(i, a) {
     return "[Axios v" + Xa + "] Transitional option '" + i + "'" + a + (t ? ". " + t : "");
@@ -3792,7 +3792,7 @@ Lt.transitional = function(r, n, t) {
         o(a, " has been removed" + (n ? " in " + n : "")),
         W.ERR_DEPRECATED
       );
-    return n && !Tr[a] && (Tr[a] = !0, console.warn(
+    return n && !Pr[a] && (Pr[a] = !0, console.warn(
       o(
         a,
         " has been deprecated since v" + n + " and will be removed in the near future"
@@ -3818,7 +3818,7 @@ function Va(e, r, n) {
 var Ja = {
   assertOptions: Va,
   validators: Lt
-}, zn = T, Ka = An, Ir = Sa, Dr = Ga, Pe = Bn, Qa = In, $n = Ja, Q = $n.validators;
+}, zn = P, Ka = An, Ir = Sa, Dr = Ga, Te = Bn, Qa = In, $n = Ja, Q = $n.validators;
 function te(e) {
   this.defaults = e, this.interceptors = {
     request: new Ir(),
@@ -3826,7 +3826,7 @@ function te(e) {
   };
 }
 te.prototype.request = function(r, n) {
-  typeof r == "string" ? (n = n || {}, n.url = r) : n = r || {}, n = Pe(this.defaults, n), n.method ? n.method = n.method.toLowerCase() : this.defaults.method ? n.method = this.defaults.method.toLowerCase() : n.method = "get";
+  typeof r == "string" ? (n = n || {}, n.url = r) : n = r || {}, n = Te(this.defaults, n), n.method ? n.method = n.method.toLowerCase() : this.defaults.method ? n.method = this.defaults.method.toLowerCase() : n.method = "get";
   var t = n.transitional;
   t !== void 0 && $n.assertOptions(t, {
     silentJSONParsing: Q.transitional(Q.boolean),
@@ -3867,13 +3867,13 @@ te.prototype.request = function(r, n) {
   return c;
 };
 te.prototype.getUri = function(r) {
-  r = Pe(this.defaults, r);
+  r = Te(this.defaults, r);
   var n = Qa(r.baseURL, r.url);
   return Ka(n, r.params, r.paramsSerializer);
 };
 zn.forEach(["delete", "get", "head", "options"], function(r) {
   te.prototype[r] = function(n, t) {
-    return this.request(Pe(t || {}, {
+    return this.request(Te(t || {}, {
       method: r,
       url: n,
       data: (t || {}).data
@@ -3883,7 +3883,7 @@ zn.forEach(["delete", "get", "head", "options"], function(r) {
 zn.forEach(["post", "put", "patch"], function(r) {
   function n(t) {
     return function(i, a, c) {
-      return this.request(Pe(c || {}, {
+      return this.request(Te(c || {}, {
         method: r,
         headers: t ? {
           "Content-Type": "multipart/form-data"
@@ -3964,12 +3964,12 @@ function ts() {
   if (Lr)
     return yt;
   Lr = 1;
-  var e = T;
+  var e = P;
   return yt = function(n) {
     return e.isObject(n) && n.isAxiosError === !0;
   }, yt;
 }
-var zr = T, rs = Sn, me = Ya, ns = Bn, is = Ue;
+var zr = P, rs = Sn, me = Ya, ns = Bn, is = Ue;
 function qn(e) {
   var r = new me(e), n = rs(me.prototype.request, r);
   return zr.extend(n, me.prototype, r), zr.extend(n, r), n.create = function(o) {
@@ -3982,7 +3982,7 @@ F.CanceledError = Ce();
 F.CancelToken = Za();
 F.isCancel = Fn();
 F.VERSION = Ln().version;
-F.toFormData = Pn;
+F.toFormData = Tn;
 F.AxiosError = ie;
 F.Cancel = F.CanceledError;
 F.all = function(r) {
@@ -3990,9 +3990,9 @@ F.all = function(r) {
 };
 F.spread = es();
 F.isAxiosError = ts();
-Pt.exports = F;
-Pt.exports.default = F;
-var os = Pt.exports, as = os, zt = { exports: {} };
+Tt.exports = F;
+Tt.exports.default = F;
+var os = Tt.exports, as = os, zt = { exports: {} };
 zt.exports = Mn;
 zt.exports.HttpsAgent = Mn;
 function Mn() {
@@ -4049,7 +4049,7 @@ var ss = zt.exports, re = {}, $t = {};
 })($t);
 Object.defineProperty(re, "__esModule", { value: !0 });
 re.customAdapter = re.statusToCode = void 0;
-const us = Tn, cs = Ue, ls = Dn, q = $t;
+const us = Pn, cs = Ue, ls = Dn, q = $t;
 function kn(e) {
   switch (e) {
     case q.Status.OK:
@@ -4336,6 +4336,36 @@ class Us {
     );
     return this.removeDuplicates(o);
   }
+  toLagLngTuple(r) {
+    if (typeof r.lat != "number" || typeof r.lng != "number")
+      throw Error("latLng.lat or latLng.lng is not of type number");
+    return [r.lat, r.lng];
+  }
+  metersToKm(r) {
+    return r / 1e3;
+  }
+  addDistanceAttribute(r) {
+    let n = 0;
+    return { towns: r.map((o, i) => {
+      const a = r[i + 1];
+      if (a == null)
+        return o;
+      const c = this.metersToKm(
+        this.getHaversineDistance(
+          this.toLagLngTuple(o.latLng),
+          this.toLagLngTuple(a.latLng)
+        )
+      );
+      return n += c, {
+        ...o,
+        distance: `${c.toFixed(2)}km`
+      };
+    }), totalDistance: `${n.toFixed(2)}km` };
+  }
+  async getOutput(r) {
+    const n = await this.getTowns(r);
+    return this.addDistanceAttribute(n);
+  }
   getPoints(r) {
     let n = "";
     return typeof r == "string" ? n = r : n = r.points, n;
@@ -4371,7 +4401,8 @@ class Us {
     }
   }
   // Warning: this could lead to mistakes if 2 towns have the same name but correspond to
-  // 2 different places
+  // 2 different places (less of chance with the postal code but if the postal code does not exist, then
+  // we could have a bug)
   removeDuplicates(r) {
     return r.filter(({ name: n }, t) => n !== r[t + 1]?.name);
   }
@@ -4398,8 +4429,12 @@ class Hn extends Us {
   }
   async main(r) {
     try {
-      const n = await this.findRoute(r), t = n.status, o = new Hn(), i = o.getCoordinates(n);
-      return { townNames: (await o.getTowns(i)).map(({ name: c }) => c), status: t };
+      const n = await this.findRoute(r), t = n.status, o = new Hn(), i = o.getCoordinates(n), { towns: a, totalDistance: c } = await o.getOutput(i);
+      return {
+        towns: a,
+        totalDistance: c,
+        status: t
+      };
     } catch (n) {
       throw Error(`Error finding route:" ${n}`);
     }
