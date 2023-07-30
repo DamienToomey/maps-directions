@@ -40,13 +40,12 @@ export const Map: React.FC<Props> = ({ towns }) => {
       // coordInfoWindow.setContent(`${i}. ${town.name}`);
       // coordInfoWindow.setPosition(town.latLng);
       // coordInfoWindow.open(map);
-      if (i % 2 === 0) {
-        new window.google.maps.Marker({
-          position: town.latLng, // Replace with the marker latitude and longitude
-          map: map,
-          label: i.toString(),
-        });
-      }
+
+      new window.google.maps.Marker({
+        position: town.latLng, // Replace with the marker latitude and longitude
+        map: map,
+        label: i.toString(),
+      });
     }
   }, [towns]);
 
