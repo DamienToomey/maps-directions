@@ -32,19 +32,18 @@ export class FrontMapsDirections extends MapsDirections<
   }
 
   public async main(
-    towns: string[]
-  ): Promise<{ towns: string[]; status: google.maps.DirectionsStatus }> {
+    townNames: string[]
+  ): Promise<{ townNames: string[]; status: google.maps.DirectionsStatus }> {
     try {
-      const directionsResult = await this.findRoute(towns);
+      const directionsResult = await this.findRoute(townNames);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const status: google.maps.DirectionsStatus = (directionsResult as any)
         .status;
 
       const frontRoute = new FrontMapsDirections();
       const coordinates = frontRoute.getCoordinates(directionsResult);
-      const townNames = await frontRoute.getTownNames(coordinates);
-
-      return { towns: townNames, status };
+      const towns = await frontRoute.getTowns(coordinates);
+      return { townNames: towns.map(({ name }) => name), status };
     } catch (error) {
       throw Error(`Error finding route:" ${error}`);
     }

@@ -10,16 +10,16 @@ const getInputKey = (index: number) => {
 };
 
 export interface FormState {
-  towns: string[];
+  townNames: string[];
   inputKeys: string[];
 }
 
 export const INITIAL_FORM_STATE: FormState = {
-  towns: [],
+  townNames: [],
   inputKeys: [getInputKey(0), getInputKey(1)],
 };
 
-export type FormActionType = 'addInput' | 'removeInput' | 'setTowns';
+export type FormActionType = 'addInput' | 'removeInput' | 'setTownNames';
 
 export interface FormAction<T extends FormActionType, P> {
   type: T;
@@ -31,7 +31,10 @@ export type RemoveInputAction = FormAction<
   'removeInput',
   { inputKeyToDelete: string }
 >;
-export type SetTownsAction = FormAction<'setTowns', { towns: string[] }>;
+export type SetTownsAction = FormAction<
+  'setTownNames',
+  { townNames: string[] }
+>;
 
 export type FormActions = AddInputAction | RemoveInputAction | SetTownsAction;
 
@@ -56,10 +59,10 @@ export const formReducer: Reducer<FormState, FormActions> = (
           (inputKey) => inputKey !== payload.inputKeyToDelete
         ),
       };
-    case 'setTowns':
+    case 'setTownNames':
       return {
         ...state,
-        towns: payload.towns,
+        townNames: payload.townNames,
       };
   }
 };

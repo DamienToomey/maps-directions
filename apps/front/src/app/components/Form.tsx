@@ -3,13 +3,13 @@ import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useToast } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import TownsList from './TownsList';
+import TownNamesList from './TownNamesList';
 import { useFormContext, useFormDispatch } from '../contexts/form.context';
 import InputForm from './InputsForm';
 import { FrontMapsDirections } from '@maps-directions/maps-directions';
 
 export const Form: React.FC = () => {
-  const { inputKeys, towns } = useFormContext();
+  const { inputKeys, townNames } = useFormContext();
   const dispatch = useFormDispatch();
 
   const toast = useToast();
@@ -38,10 +38,10 @@ export const Form: React.FC = () => {
 
   const onSubmit = useCallback(
     async (inputKeyToValue: { [inputKey: string]: string }) => {
-      const { towns, status } = await mapsDirections.main(
+      const { townNames, status } = await mapsDirections.main(
         Object.values(inputKeyToValue)
       );
-      dispatch({ type: 'setTowns', payload: { towns } });
+      dispatch({ type: 'setTownNames', payload: { townNames } });
       toast({
         title: `Towns search status: ${status}`,
         status:
@@ -83,7 +83,7 @@ export const Form: React.FC = () => {
         </VStack>
       </form>
 
-      <TownsList towns={towns}></TownsList>
+      <TownNamesList townNames={townNames}></TownNamesList>
     </>
   );
 };

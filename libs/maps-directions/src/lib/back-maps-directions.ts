@@ -55,14 +55,14 @@ class BackMapsDirections extends MapsDirections<
     return response.data.results;
   }
 
-  public async main(towns: string[]): Promise<{ towns: string[] }> {
+  public async main(townNames: string[]): Promise<{ townNames: string[] }> {
     try {
       const mapsDirections = new BackMapsDirections();
-      const directionsResult = await mapsDirections.findRoute(towns);
+      const directionsResult = await mapsDirections.findRoute(townNames);
 
       const coordinates = mapsDirections.getCoordinates(directionsResult);
-      const townNames = await mapsDirections.getTownNames(coordinates);
-      return { towns: townNames };
+      const towns = await mapsDirections.getTowns(coordinates);
+      return { townNames: towns.map(({ name }) => name) };
     } catch (error) {
       throw Error(`Error" ${error}`);
     }
@@ -70,7 +70,7 @@ class BackMapsDirections extends MapsDirections<
 }
 
 const main = async () => {
-  const towns = [
+  const townNames = [
     // "21 rue de l'écho 27400 Louviers, France",
     // 'Pl. du Ralliement, 49100 Angers',
     'Louviers France',
@@ -82,9 +82,9 @@ const main = async () => {
 
   const mapsDirections = new BackMapsDirections();
 
-  const { towns: resTowns } = await mapsDirections.main(towns);
+  const { townNames: resTownNames } = await mapsDirections.main(townNames);
 
-  console.log(resTowns);
+  console.log(resTownNames);
 };
 
 main();

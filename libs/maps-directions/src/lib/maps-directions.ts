@@ -12,6 +12,11 @@ import { LatLngTuple, decode } from '@googlemaps/polyline-codec';
 
 type K = LatLngLiteral | google.maps.LatLng;
 
+interface Town {
+  latLng: K;
+  name: string;
+}
+
 export abstract class MapsDirections<
   T extends GeocodeResult[] | google.maps.GeocoderResult[],
   U extends DirectionsResponseData | google.maps.DirectionsResult
@@ -22,23 +27,23 @@ export abstract class MapsDirections<
     return this.getCoordinatesAlongPolyline(points);
   }
 
-  public async getTownNames(latLngs: K[]): Promise<string[]> {
+  public async getTowns(latLngs: K[]): Promise<Town[]> {
     const arrayOfPromises = latLngs.map(async (latLng) => {
-      return await this.getTownName(latLng);
+      return await this.getTown(latLng);
     });
-    const fullAddresses = await Promise.all(arrayOfPromises);
-    const fileteredFullAddresses = fullAddresses.filter(
-      (fullAddress): fullAddress is string => fullAddress != null
+    const towns = await Promise.all(arrayOfPromises);
+    const filteredTowns = towns.filter(
+      (filteredTown): filteredTown is Town => filteredTown != null
     );
 
-    return this.removeDuplicates(fileteredFullAddresses);
+    return this.removeDuplicates(filteredTowns);
   }
 
   public abstract findRoute(towns: string[]): Promise<U>;
 
   public abstract main(
-    towns: string[]
-  ): Promise<{ towns: string[]; status?: unknown }>;
+    townNames: string[]
+  ): Promise<{ townNames: string[]; status?: unknown }>;
 
   protected abstract getGeocorderResults(latLng: K): Promise<T>;
 
@@ -86,7 +91,9 @@ export abstract class MapsDirections<
     return d;
   }
 
-  private async getTownName(latLng: K): Promise<string | null> {
+  private async getTown(
+    latLng: K
+  ): Promise<{ latLng: K; name: string } | null> {
     try {
       const results = await this.getGeocorderResults(latLng);
 
@@ -95,15 +102,21 @@ export abstract class MapsDirections<
       }
 
       const addressComponents = results[0].address_components;
-      const townComponent = addressComponents.find((component) =>
-        component.types.includes(AddressType.locality)
+      const components = addressComponents.filter((component) =>
+        component.types.some(
+          (type) =>
+            AddressType.locality === type || AddressType.postal_code === type
+        )
       );
 
-      if (townComponent) {
-        return townComponent.long_name;
+      if (components.length === 0) {
+        return null;
       }
 
-      return null;
+      return {
+        latLng,
+        name: components.map(({ long_name }) => long_name).join(', '),
+      };
     } catch (error) {
       throw Error(`Error getting town name:" ${error}`);
     }
@@ -111,11 +124,8 @@ export abstract class MapsDirections<
 
   // Warning: this could lead to mistakes if 2 towns have the same name but correspond to
   // 2 different places
-  private removeDuplicates(townNames: string[]): string[] {
-    // return Array.from(new Set(townNames));
-    return townNames.filter(
-      (townName, index) => townName !== townNames[index + 1]
-    );
+  private removeDuplicates(towns: Town[]): Town[] {
+    return towns.filter(({ name }, index) => name !== towns[index + 1]?.name);
   }
 
   private getCoordinatesAlongPolyline(points: string): K[] {
