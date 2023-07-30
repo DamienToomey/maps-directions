@@ -9,6 +9,7 @@ import {
 import { MapsDirections } from './maps-directions';
 
 import * as dotenv from 'dotenv';
+import { Town } from './town.model';
 dotenv.config();
 
 class BackMapsDirections extends MapsDirections<
@@ -55,14 +56,18 @@ class BackMapsDirections extends MapsDirections<
     return response.data.results;
   }
 
-  public async main(townNames: string[]): Promise<{ townNames: string[] }> {
+  public async main(
+    townNames: string[]
+  ): Promise<{ towns: Town[]; totalDistance: string }> {
     try {
       const mapsDirections = new BackMapsDirections();
       const directionsResult = await mapsDirections.findRoute(townNames);
 
       const coordinates = mapsDirections.getCoordinates(directionsResult);
-      const towns = await mapsDirections.getTowns(coordinates);
-      return { townNames: towns.map(({ name }) => name) };
+      const { towns, totalDistance } = await mapsDirections.getOutput(
+        coordinates
+      );
+      return { towns, totalDistance };
     } catch (error) {
       throw Error(`Error" ${error}`);
     }
@@ -82,9 +87,14 @@ const main = async () => {
 
   const mapsDirections = new BackMapsDirections();
 
-  const { townNames: resTownNames } = await mapsDirections.main(townNames);
+  const { towns, totalDistance } = await mapsDirections.main(townNames);
 
-  console.log(resTownNames);
+  for (let i = 0; i < towns.length; i++) {
+    const { name, distance } = towns[i];
+    console.log(name, distance ? distance : '');
+  }
+
+  console.log('Total distance', totalDistance);
 };
 
 main();

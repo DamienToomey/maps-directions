@@ -5,17 +5,11 @@ import {
   AddressType,
   DirectionsResponseData,
   GeocodeResult,
-  LatLngLiteral,
 } from '@googlemaps/google-maps-services-js';
 
 import { LatLngTuple, decode } from '@googlemaps/polyline-codec';
-
-type K = LatLngLiteral | google.maps.LatLng;
-
-interface Town {
-  latLng: K;
-  name: string;
-}
+import { K } from './k.model';
+import { Town } from './town.model';
 
 export abstract class MapsDirections<
   T extends GeocodeResult[] | google.maps.GeocoderResult[],
@@ -39,11 +33,59 @@ export abstract class MapsDirections<
     return this.removeDuplicates(filteredTowns);
   }
 
+  private toLagLngTuple(latLng: K): LatLngTuple {
+    if (typeof latLng.lat !== 'number' || typeof latLng.lng !== 'number') {
+      throw Error('latLng.lat or latLng.lng is not of type number');
+    }
+    return [latLng.lat, latLng.lng];
+  }
+
+  private metersToKm(meters: number) {
+    return meters / 1000;
+  }
+
+  private addDistanceAttribute(towns: Town[]): {
+    towns: Town[];
+    totalDistance: string;
+  } {
+    let totalDistance = 0;
+    const newTowns = towns.map((town, i) => {
+      const nextTown = towns[i + 1];
+
+      if (nextTown == null) {
+        return town;
+      }
+
+      const distance = this.metersToKm(
+        this.getHaversineDistance(
+          this.toLagLngTuple(town.latLng),
+          this.toLagLngTuple(nextTown.latLng)
+        )
+      );
+
+      totalDistance += distance;
+
+      return {
+        ...town,
+        distance: `${distance.toFixed(2)}km`,
+      };
+    });
+
+    return { towns: newTowns, totalDistance: `${totalDistance.toFixed(2)}km` };
+  }
+
+  public async getOutput(
+    latLngs: K[]
+  ): Promise<{ towns: Town[]; totalDistance: string }> {
+    const towns = await this.getTowns(latLngs);
+    return this.addDistanceAttribute(towns);
+  }
+
   public abstract findRoute(towns: string[]): Promise<U>;
 
   public abstract main(
     townNames: string[]
-  ): Promise<{ townNames: string[]; status?: unknown }>;
+  ): Promise<{ towns: Town[]; status?: unknown }>;
 
   protected abstract getGeocorderResults(latLng: K): Promise<T>;
 
@@ -123,7 +165,8 @@ export abstract class MapsDirections<
   }
 
   // Warning: this could lead to mistakes if 2 towns have the same name but correspond to
-  // 2 different places
+  // 2 different places (less of chance with the postal code but if the postal code does not exist, then
+  // we could have a bug)
   private removeDuplicates(towns: Town[]): Town[] {
     return towns.filter(({ name }, index) => name !== towns[index + 1]?.name);
   }

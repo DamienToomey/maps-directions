@@ -1,3 +1,4 @@
+import { Town } from '@maps-directions/maps-directions';
 import { Reducer } from 'react';
 
 /**
@@ -10,16 +11,22 @@ const getInputKey = (index: number) => {
 };
 
 export interface FormState {
-  townNames: string[];
+  towns: Town[];
+  totalDistance: string | undefined;
   inputKeys: string[];
 }
 
 export const INITIAL_FORM_STATE: FormState = {
-  townNames: [],
+  towns: [],
+  totalDistance: undefined,
   inputKeys: [getInputKey(0), getInputKey(1)],
 };
 
-export type FormActionType = 'addInput' | 'removeInput' | 'setTownNames';
+export type FormActionType =
+  | 'addInput'
+  | 'removeInput'
+  | 'setTowns'
+  | 'setTotalDistance';
 
 export interface FormAction<T extends FormActionType, P> {
   type: T;
@@ -31,12 +38,17 @@ export type RemoveInputAction = FormAction<
   'removeInput',
   { inputKeyToDelete: string }
 >;
-export type SetTownsAction = FormAction<
-  'setTownNames',
-  { townNames: string[] }
+export type SetTownsAction = FormAction<'setTowns', { towns: Town[] }>;
+export type setTotalDistanceAction = FormAction<
+  'setTotalDistance',
+  { totalDistance: string }
 >;
 
-export type FormActions = AddInputAction | RemoveInputAction | SetTownsAction;
+export type FormActions =
+  | AddInputAction
+  | RemoveInputAction
+  | SetTownsAction
+  | setTotalDistanceAction;
 
 export const formReducer: Reducer<FormState, FormActions> = (
   state,
@@ -59,10 +71,15 @@ export const formReducer: Reducer<FormState, FormActions> = (
           (inputKey) => inputKey !== payload.inputKeyToDelete
         ),
       };
-    case 'setTownNames':
+    case 'setTowns':
       return {
         ...state,
-        townNames: payload.townNames,
+        towns: payload.towns,
+      };
+    case 'setTotalDistance':
+      return {
+        ...state,
+        totalDistance: payload.totalDistance,
       };
   }
 };

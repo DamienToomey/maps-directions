@@ -9,7 +9,7 @@ import InputForm from './InputsForm';
 import { FrontMapsDirections } from '@maps-directions/maps-directions';
 
 export const Form: React.FC = () => {
-  const { inputKeys, townNames } = useFormContext();
+  const { inputKeys, towns, totalDistance } = useFormContext();
   const dispatch = useFormDispatch();
 
   const toast = useToast();
@@ -38,10 +38,11 @@ export const Form: React.FC = () => {
 
   const onSubmit = useCallback(
     async (inputKeyToValue: { [inputKey: string]: string }) => {
-      const { townNames, status } = await mapsDirections.main(
+      const { towns, totalDistance, status } = await mapsDirections.main(
         Object.values(inputKeyToValue)
       );
-      dispatch({ type: 'setTownNames', payload: { townNames } });
+      dispatch({ type: 'setTotalDistance', payload: { totalDistance } });
+      dispatch({ type: 'setTowns', payload: { towns } });
       toast({
         title: `Towns search status: ${status}`,
         status:
@@ -83,7 +84,10 @@ export const Form: React.FC = () => {
         </VStack>
       </form>
 
-      <TownNamesList townNames={townNames}></TownNamesList>
+      <TownNamesList
+        towns={towns}
+        totalDistance={totalDistance}
+      ></TownNamesList>
     </>
   );
 };

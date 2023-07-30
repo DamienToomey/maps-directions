@@ -1,18 +1,23 @@
-import { ListItem, OrderedList } from '@chakra-ui/react';
+import { ListItem, OrderedList, Text } from '@chakra-ui/react';
+import { Town } from '@maps-directions/maps-directions';
 
 interface Props {
-  townNames: string[];
+  towns: Town[];
+  totalDistance: string | undefined;
 }
 
-export const TownNamesList: React.FC<Props> = ({ townNames }) => {
+export const TownNamesList: React.FC<Props> = ({ towns, totalDistance }) => {
   return (
-    <OrderedList listStyleType="none" margin={0}>
-      {townNames.map((townName, i) => (
-        <ListItem key={`${townName}-${i}`}>
-          {i}. {townName}
-        </ListItem>
-      ))}
-    </OrderedList>
+    <>
+      <OrderedList listStyleType="none" margin={0}>
+        {towns.map((town, i) => (
+          <ListItem key={`${town.name}-${i}`}>
+            {i}. {town.name} {town.distance ? `(${town.distance})` : ''}
+          </ListItem>
+        ))}
+      </OrderedList>
+      {totalDistance && <Text>Total Distance: {totalDistance}</Text>}
+    </>
   );
 };
 

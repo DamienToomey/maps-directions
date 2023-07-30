@@ -1,4 +1,5 @@
 import { MapsDirections } from './maps-directions';
+import { Town } from './town.model';
 
 export class FrontMapsDirections extends MapsDirections<
   google.maps.GeocoderResult[],
@@ -31,9 +32,11 @@ export class FrontMapsDirections extends MapsDirections<
     return await directionsService.route(request);
   }
 
-  public async main(
-    townNames: string[]
-  ): Promise<{ townNames: string[]; status: google.maps.DirectionsStatus }> {
+  public async main(townNames: string[]): Promise<{
+    towns: Town[];
+    totalDistance: string;
+    status: google.maps.DirectionsStatus;
+  }> {
     try {
       const directionsResult = await this.findRoute(townNames);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,8 +45,12 @@ export class FrontMapsDirections extends MapsDirections<
 
       const frontRoute = new FrontMapsDirections();
       const coordinates = frontRoute.getCoordinates(directionsResult);
-      const towns = await frontRoute.getTowns(coordinates);
-      return { townNames: towns.map(({ name }) => name), status };
+      const { towns, totalDistance } = await frontRoute.getOutput(coordinates);
+      return {
+        towns,
+        totalDistance,
+        status,
+      };
     } catch (error) {
       throw Error(`Error finding route:" ${error}`);
     }
