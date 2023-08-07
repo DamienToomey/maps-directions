@@ -59,6 +59,4 @@ export const Map: React.FC<Props> = ({ towns }) => {
   return <div ref={ref} id="map" style={mapStyles}></div>;
 };
 
-//markers=color:green%7Clabel:G%7C40.711614
-
 export default Map;

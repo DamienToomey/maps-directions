@@ -17,6 +17,8 @@ export interface FormState {
   inputKeys: string[];
   center: google.maps.LatLng | undefined;
   zoom: number | undefined;
+  staticMapWidth: number;
+  staticMapHeight: number;
 }
 
 export const INITIAL_FORM_STATE: FormState = {
@@ -26,6 +28,8 @@ export const INITIAL_FORM_STATE: FormState = {
   inputKeys: [getInputKey(0), getInputKey(1)],
   center: undefined,
   zoom: undefined,
+  staticMapWidth: 600,
+  staticMapHeight: 600,
 };
 
 export type FormActionType =

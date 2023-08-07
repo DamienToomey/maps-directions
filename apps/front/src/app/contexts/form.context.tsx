@@ -14,7 +14,11 @@ import {
 
 const FormContext = createContext<FormState>(INITIAL_FORM_STATE);
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-const FormDispatchContext = createContext<Dispatch<FormActions>>(() => {});
+const FormDispatchContext = createContext<Dispatch<FormActions>>(() => {
+  throw new Error(
+    'Form dispatch context is not initialized, please wrap with <FormContextProvider />'
+  );
+});
 
 export const FormContextProvider: React.FC<PropsWithChildren> = (props) => {
   const [state, dispatch] = useReducer(formReducer, INITIAL_FORM_STATE);
