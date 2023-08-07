@@ -3,7 +3,8 @@ import { Town } from './town.model';
 
 export class FrontMapsDirections extends MapsDirections<
   google.maps.GeocoderResult[],
-  google.maps.DirectionsResult
+  google.maps.DirectionsResult,
+  google.maps.TravelMode
 > {
   protected async getGeocorderResults(
     latLng: google.maps.LatLng
@@ -16,14 +17,14 @@ export class FrontMapsDirections extends MapsDirections<
   }
 
   public async findRoute(
-    towns: string[]
+    towns: string[],
+    travelMode: google.maps.TravelMode
   ): Promise<google.maps.DirectionsResult> {
     const directionsService = new google.maps.DirectionsService();
-
     const request: google.maps.DirectionsRequest = {
       origin: towns[0],
       destination: towns[towns.length - 1],
-      travelMode: google.maps.TravelMode.BICYCLING,
+      travelMode: travelMode,
       waypoints: towns
         .slice(1, towns.length)
         .map((town) => ({ location: town })),
@@ -32,13 +33,16 @@ export class FrontMapsDirections extends MapsDirections<
     return await directionsService.route(request);
   }
 
-  public async main(townNames: string[]): Promise<{
+  public async main(
+    townNames: string[],
+    travelMode: google.maps.TravelMode
+  ): Promise<{
     towns: Town[];
     totalDistance: string;
     status: google.maps.DirectionsStatus;
   }> {
     try {
-      const directionsResult = await this.findRoute(townNames);
+      const directionsResult = await this.findRoute(townNames, travelMode);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const status: google.maps.DirectionsStatus = (directionsResult as any)
         .status;

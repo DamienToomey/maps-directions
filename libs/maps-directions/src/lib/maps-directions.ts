@@ -5,6 +5,7 @@ import {
   AddressType,
   DirectionsResponseData,
   GeocodeResult,
+  TravelMode,
 } from '@googlemaps/google-maps-services-js';
 
 import { LatLngTuple, decode } from '@googlemaps/polyline-codec';
@@ -13,7 +14,8 @@ import { Town } from './town.model';
 
 export abstract class MapsDirections<
   T extends GeocodeResult[] | google.maps.GeocoderResult[],
-  U extends DirectionsResponseData | google.maps.DirectionsResult
+  U extends DirectionsResponseData | google.maps.DirectionsResult,
+  G extends TravelMode | google.maps.TravelMode
 > {
   public getCoordinates(directionsResponseData: U): K[] {
     const overviewPolyline = directionsResponseData.routes[0].overview_polyline;
@@ -81,10 +83,11 @@ export abstract class MapsDirections<
     return this.addDistanceAttribute(towns);
   }
 
-  public abstract findRoute(towns: string[]): Promise<U>;
+  public abstract findRoute(towns: string[], travelMode: G): Promise<U>;
 
   public abstract main(
-    townNames: string[]
+    townNames: string[],
+    travelMode: G
   ): Promise<{ towns: Town[]; status?: unknown }>;
 
   protected abstract getGeocorderResults(latLng: K): Promise<T>;

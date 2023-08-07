@@ -1,5 +1,6 @@
 import { Town } from '@maps-directions/maps-directions';
 import { Reducer } from 'react';
+import { TravelMode } from '../models/travel-mode.model';
 
 /**
  * WARNING: we need to remove the default and user created
@@ -19,6 +20,7 @@ export interface FormState {
   zoom: number | undefined;
   staticMapWidth: number;
   staticMapHeight: number;
+  travelMode: TravelMode;
 }
 
 export const INITIAL_FORM_STATE: FormState = {
@@ -30,6 +32,7 @@ export const INITIAL_FORM_STATE: FormState = {
   zoom: undefined,
   staticMapWidth: 600,
   staticMapHeight: 600,
+  travelMode: TravelMode.BICYCLING,
 };
 
 export type FormActionType =
@@ -39,7 +42,8 @@ export type FormActionType =
   | 'setTowns'
   | 'setTotalDistance'
   | 'setCenter'
-  | 'setZoom';
+  | 'setZoom'
+  | 'setTravelMode';
 
 export interface FormAction<T extends FormActionType, P> {
   type: T;
@@ -59,6 +63,10 @@ export type SetTotalDistanceAction = FormAction<
 >;
 export type SetCenter = FormAction<'setCenter', { center: google.maps.LatLng }>;
 export type SetZoom = FormAction<'setZoom', { zoom: number }>;
+export type SetTravelMode = FormAction<
+  'setTravelMode',
+  { travelMode: google.maps.TravelMode }
+>;
 
 export type FormActions =
   | SetApiKeyAction
@@ -67,7 +75,8 @@ export type FormActions =
   | SetTownsAction
   | SetTotalDistanceAction
   | SetCenter
-  | SetZoom;
+  | SetZoom
+  | SetTravelMode;
 
 export const formReducer: Reducer<FormState, FormActions> = (
   state,
@@ -114,6 +123,11 @@ export const formReducer: Reducer<FormState, FormActions> = (
       return {
         ...state,
         zoom: payload.zoom,
+      };
+    case 'setTravelMode':
+      return {
+        ...state,
+        travelMode: payload.travelMode,
       };
   }
 };

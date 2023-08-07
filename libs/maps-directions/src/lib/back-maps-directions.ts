@@ -14,7 +14,8 @@ dotenv.config();
 
 class BackMapsDirections extends MapsDirections<
   GeocodeResult[],
-  DirectionsResponseData
+  DirectionsResponseData,
+  TravelMode
 > {
   private client = new Client();
 
@@ -22,7 +23,10 @@ class BackMapsDirections extends MapsDirections<
     return process.env['NX_GOOGLE_MAPS_API_KEY'] ?? '';
   }
 
-  public async findRoute(towns: string[]): Promise<DirectionsResponseData> {
+  public async findRoute(
+    towns: string[],
+    travelMode: TravelMode
+  ): Promise<DirectionsResponseData> {
     const origin = towns[0];
     const destination: string = towns[towns.length - 1];
 
@@ -36,7 +40,7 @@ class BackMapsDirections extends MapsDirections<
         origin,
         destination,
         key: this.getApiKey(),
-        mode: TravelMode.bicycling,
+        mode: travelMode,
         waypoints,
       },
     });
@@ -57,11 +61,15 @@ class BackMapsDirections extends MapsDirections<
   }
 
   public async main(
-    townNames: string[]
+    townNames: string[],
+    travelMode: TravelMode
   ): Promise<{ towns: Town[]; totalDistance: string }> {
     try {
       const mapsDirections = new BackMapsDirections();
-      const directionsResult = await mapsDirections.findRoute(townNames);
+      const directionsResult = await mapsDirections.findRoute(
+        townNames,
+        travelMode
+      );
 
       const coordinates = mapsDirections.getCoordinates(directionsResult);
       const { towns, totalDistance } = await mapsDirections.getOutput(
@@ -85,9 +93,14 @@ const main = async () => {
     // 'Bar le duc France',
   ];
 
+  const travelMode = TravelMode.bicycling;
+
   const mapsDirections = new BackMapsDirections();
 
-  const { towns, totalDistance } = await mapsDirections.main(townNames);
+  const { towns, totalDistance } = await mapsDirections.main(
+    townNames,
+    travelMode
+  );
 
   for (let i = 0; i < towns.length; i++) {
     const { name, distance } = towns[i];

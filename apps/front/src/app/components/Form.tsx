@@ -1,5 +1,5 @@
-import { Button, FormLabel, VStack } from '@chakra-ui/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, FormLabel, Stack, VStack } from '@chakra-ui/react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useToast } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
@@ -12,6 +12,7 @@ import { StaticMap } from './StaticMap';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import Pdf from './Pdf';
 import { getStaticMapQueryParams } from '../utils/static-map-query-params';
+import { Radio, RadioGroup } from '@chakra-ui/react';
 
 export const Form: React.FC = () => {
   const {
@@ -23,6 +24,7 @@ export const Form: React.FC = () => {
     totalDistance,
     staticMapWidth,
     staticMapHeight,
+    travelMode,
   } = useFormContext();
   const dispatch = useFormDispatch();
   const [staticMapQueryParams, setStaticMapQueryParams] = useState<
@@ -47,16 +49,24 @@ export const Form: React.FC = () => {
   //   setIsApiKeyValid(false);
   // }, []);
 
-  const mapsDirections = useMemo(() => new FrontMapsDirections(), []);
-
   const onAddTown = useCallback(() => {
     dispatch({ type: 'addInput', payload: undefined });
   }, [dispatch]);
 
+  const setTravelMode = useCallback(
+    (travelMode: google.maps.TravelMode) => {
+      dispatch({ type: 'setTravelMode', payload: { travelMode } });
+    },
+    [dispatch]
+  );
+
   const onSubmit = useCallback(
     async (inputKeyToValue: { [inputKey: string]: string }) => {
+      const mapsDirections = new FrontMapsDirections();
+
       const { towns, totalDistance, status } = await mapsDirections.main(
-        Object.values(inputKeyToValue)
+        Object.values(inputKeyToValue),
+        travelMode
       );
       dispatch({ type: 'setTotalDistance', payload: { totalDistance } });
       dispatch({ type: 'setTowns', payload: { towns } });
@@ -69,7 +79,7 @@ export const Form: React.FC = () => {
         position: 'top-right',
       });
     },
-    [mapsDirections, dispatch, toast]
+    [dispatch, toast, travelMode]
   );
 
   useEffect(() => {
@@ -101,6 +111,14 @@ export const Form: React.FC = () => {
         style={{ width: '100%', marginBottom: '2rem' }}
       >
         <VStack align="start">
+          <RadioGroup onChange={setTravelMode} value={travelMode}>
+            <Stack direction="row">
+              <Radio value={google.maps.TravelMode.BICYCLING}>Cycling</Radio>
+              <Radio value={google.maps.TravelMode.DRIVING}>Driving</Radio>
+              <Radio value={google.maps.TravelMode.WALKING}>Walking</Radio>
+            </Stack>
+          </RadioGroup>
+
           <FormLabel>Fill the form to get directions</FormLabel>
 
           <InputForm register={register} errors={errors}></InputForm>
