@@ -1,8 +1,8 @@
 /// <reference types="@types/google.maps" />
-import { DirectionsResponseData, GeocodeResult } from '@googlemaps/google-maps-services-js';
+import { DirectionsResponseData, GeocodeResult, TravelMode } from '@googlemaps/google-maps-services-js';
 import { K } from './k.model';
 import { Town } from './town.model';
-export declare abstract class MapsDirections<T extends GeocodeResult[] | google.maps.GeocoderResult[], U extends DirectionsResponseData | google.maps.DirectionsResult> {
+export declare abstract class MapsDirections<T extends GeocodeResult[] | google.maps.GeocoderResult[], U extends DirectionsResponseData | google.maps.DirectionsResult, G extends TravelMode | google.maps.TravelMode> {
     getCoordinates(directionsResponseData: U): K[];
     getTowns(latLngs: K[]): Promise<Town[]>;
     private toLagLngTuple;
@@ -12,8 +12,8 @@ export declare abstract class MapsDirections<T extends GeocodeResult[] | google.
         towns: Town[];
         totalDistance: string;
     }>;
-    abstract findRoute(towns: string[]): Promise<U>;
-    abstract main(townNames: string[]): Promise<{
+    abstract findRoute(towns: string[], travelMode: G): Promise<U>;
+    abstract main(townNames: string[], travelMode: G): Promise<{
         towns: Town[];
         status?: unknown;
     }>;

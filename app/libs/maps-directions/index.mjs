@@ -4418,25 +4418,25 @@ class Hn extends Us {
   async getGeocorderResults(r) {
     return (await new google.maps.Geocoder().geocode({ location: r })).results;
   }
-  async findRoute(r) {
-    const n = new google.maps.DirectionsService(), t = {
+  async findRoute(r, n) {
+    const t = new google.maps.DirectionsService(), o = {
       origin: r[0],
       destination: r[r.length - 1],
-      travelMode: google.maps.TravelMode.BICYCLING,
-      waypoints: r.slice(1, r.length).map((o) => ({ location: o }))
+      travelMode: n,
+      waypoints: r.slice(1, r.length).map((i) => ({ location: i }))
     };
-    return await n.route(t);
+    return await t.route(o);
   }
-  async main(r) {
+  async main(r, n) {
     try {
-      const n = await this.findRoute(r), t = n.status, o = new Hn(), i = o.getCoordinates(n), { towns: a, totalDistance: c } = await o.getOutput(i);
+      const t = await this.findRoute(r, n), o = t.status, i = new Hn(), a = i.getCoordinates(t), { towns: c, totalDistance: s } = await i.getOutput(a);
       return {
-        towns: a,
-        totalDistance: c,
-        status: t
+        towns: c,
+        totalDistance: s,
+        status: o
       };
-    } catch (n) {
-      throw Error(`Error finding route:" ${n}`);
+    } catch (t) {
+      throw Error(`Error finding route:" ${t}`);
     }
   }
 }
