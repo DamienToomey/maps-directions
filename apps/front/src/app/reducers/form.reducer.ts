@@ -135,7 +135,6 @@ export const formReducer: Reducer<FormState, FormActions> = (
       const townsWithMarkerIndexes = getTownsWithMarkerIndexes(
         payload.towns.length
       );
-      console.log('townsWithMarkerIndexes', townsWithMarkerIndexes);
       let markerLetterIndex = 0;
       return {
         ...state,
