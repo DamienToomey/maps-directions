@@ -15,6 +15,11 @@ const getMarkers = (towns: Town[]) => {
     if (typeof latLng.lat !== 'number' || typeof latLng.lng !== 'number') {
       throw Error('latLng.lat or latLng.lng is not of type number');
     }
+
+    // https://developers.google.com/maps/documentation/maps-static/start
+    // specifies a single uppercase alphanumeric character from the set {A-Z, 0-9}.
+    // https://stackoverflow.com/questions/36876545/google-static-map-with-custom-icon-and-label
+    // "You can use up to five unique custom icons per request"
     return `markers=color:red%7Clabel:${i}%7C${latLng.lat},${latLng.lng}`;
   });
 

@@ -1,4 +1,4 @@
-import Form from './components/Form';
+import Page from './components/Page';
 
 import { Spinner } from '@chakra-ui/react';
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
@@ -27,7 +27,7 @@ export function App() {
       case Status.FAILURE:
         return <div>Error</div>;
       case Status.SUCCESS:
-        return <Form />;
+        return <Page />;
     }
   };
 

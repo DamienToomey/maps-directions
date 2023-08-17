@@ -4,12 +4,12 @@ import { getStaticMapDimensions } from '../utils/static-map-query-params';
 
 interface Props {
   queryParams: string;
-  debug?: boolean;
+  mode: 'web' | 'pdf';
 }
 
 // https://developers.google.com/maps/documentation/maps-static/overview
 // https://developers.google.com/maps/documentation/maps-static/start
-export const StaticMap: React.FC<Props> = ({ queryParams, debug }) => {
+export const StaticMap: React.FC<Props> = ({ queryParams, mode }) => {
   // I can not use
   // <Image src="https://maps.googleapis.com/maps/api/staticmap?..." />
   // because I get the error "Not valid image extension" from react-pdf
@@ -41,7 +41,7 @@ export const StaticMap: React.FC<Props> = ({ queryParams, debug }) => {
     });
   }, [queryParams]);
 
-  return debug ? (
+  return mode === 'web' ? (
     <img
       src={`https://maps.googleapis.com/maps/api/staticmap?${queryParams}`}
       alt="Error loading debug map"
