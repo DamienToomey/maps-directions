@@ -1,5 +1,5 @@
 import { ListItem, OrderedList, Text } from '@chakra-ui/react';
-import { Town } from '@maps-directions/maps-directions';
+import { FrontTown as Town } from '@maps-directions/maps-directions';
 
 interface Props {
   towns: Town[];

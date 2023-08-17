@@ -1,6 +1,30 @@
-import { Town } from '@maps-directions/maps-directions';
+import { FrontTown as Town } from '@maps-directions/maps-directions';
 import { Reducer } from 'react';
 import { TravelMode } from '../models/travel-mode.model';
+
+export const MARKER_LABELS = 'ABCDEFGHIJ';
+
+/**
+ * https://developers.google.com/maps/documentation/maps-static/start
+ * specifies a single uppercase alphanumeric character from the set {A-Z, 0-9}.
+ * https://stackoverflow.com/questions/36876545/google-static-map-with-custom-icon-and-label
+ * "You can use up to five unique custom icons per request"
+ */
+const getTownsWithMarkerIndexes = (townCount: number) => {
+  // Math.min to handle the case where we have fewer towns than MARKER_LABELS.length
+  const maxMarkerCount = Math.min(townCount, MARKER_LABELS.length);
+  const intervalsCount = maxMarkerCount - 1;
+  // TOFIX: only leads to 2 markers instead of 3 when there are only 3 towns
+  const intervalSize = Math.round(townCount / intervalsCount);
+  const indexes = [];
+
+  for (let i = 0; i < maxMarkerCount; i++) {
+    const index = Math.min(i * intervalSize, townCount - 1);
+    indexes.push(index);
+  }
+
+  return indexes;
+};
 
 /**
  * WARNING: we need to remove the default and user created
@@ -84,12 +108,13 @@ export const formReducer: Reducer<FormState, FormActions> = (
 ): FormState => {
   const { type, payload } = action;
   switch (type) {
-    case 'setApiKey':
+    case 'setApiKey': {
       return {
         ...state,
         apiKey: payload.apiKey,
       };
-    case 'addInput':
+    }
+    case 'addInput': {
       return {
         ...state,
         inputKeys: [
@@ -97,37 +122,56 @@ export const formReducer: Reducer<FormState, FormActions> = (
           getInputKey(+(state.inputKeys.at(-1)?.split('-').at(-1) ?? '') + 1),
         ],
       };
-    case 'removeInput':
+    }
+    case 'removeInput': {
       return {
         ...state,
         inputKeys: state.inputKeys.filter(
           (inputKey) => inputKey !== payload.inputKeyToDelete
         ),
       };
-    case 'setTowns':
+    }
+    case 'setTowns': {
+      const townsWithMarkerIndexes = getTownsWithMarkerIndexes(
+        payload.towns.length
+      );
+      console.log('townsWithMarkerIndexes', townsWithMarkerIndexes);
+      let markerLetterIndex = 0;
       return {
         ...state,
-        towns: payload.towns,
+        towns: payload.towns.map((town, i) => {
+          if (townsWithMarkerIndexes.includes(i)) {
+            const markerLabel = MARKER_LABELS[markerLetterIndex];
+            markerLetterIndex++;
+            return { ...town, markerLabel };
+          }
+          return town;
+        }),
       };
-    case 'setTotalDistance':
+    }
+    case 'setTotalDistance': {
       return {
         ...state,
         totalDistance: payload.totalDistance,
       };
-    case 'setCenter':
+    }
+    case 'setCenter': {
       return {
         ...state,
         center: payload.center,
       };
-    case 'setZoom':
+    }
+    case 'setZoom': {
       return {
         ...state,
         zoom: payload.zoom,
       };
-    case 'setTravelMode':
+    }
+    case 'setTravelMode': {
       return {
         ...state,
         travelMode: payload.travelMode,
       };
+    }
   }
 };

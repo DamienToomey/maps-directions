@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import './Map.css';
-import { Town } from '@maps-directions/maps-directions';
+import { FrontTown as Town } from '@maps-directions/maps-directions';
 import { usePreventScroll } from './usePreventScroll';
 import { useFormDispatch } from '../contexts/form.context';
 

@@ -1,5 +1,5 @@
 import { MapsDirections } from './maps-directions';
-import { Town } from './town.model';
+import { FrontTown } from './town.model';
 
 export class FrontMapsDirections extends MapsDirections<
   google.maps.GeocoderResult[],
@@ -37,7 +37,7 @@ export class FrontMapsDirections extends MapsDirections<
     townNames: string[],
     travelMode: google.maps.TravelMode
   ): Promise<{
-    towns: Town[];
+    towns: FrontTown[];
     totalDistance: string;
     status: google.maps.DirectionsStatus;
   }> {

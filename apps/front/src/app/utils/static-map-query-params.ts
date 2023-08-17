@@ -1,4 +1,4 @@
-import { Town } from '@maps-directions/maps-directions';
+import { FrontTown as Town } from '@maps-directions/maps-directions';
 import { INITIAL_FORM_STATE } from '../reducers/form.reducer';
 
 interface Props {
@@ -11,19 +11,31 @@ interface Props {
 }
 
 const getMarkers = (towns: Town[]) => {
-  const coordinates = towns.map(({ latLng }, i) => {
+  const townsWithMarker = towns.filter((town) => town.markerLabel);
+
+  const coordinates = townsWithMarker.map(({ latLng, markerLabel }) => {
     if (typeof latLng.lat !== 'number' || typeof latLng.lng !== 'number') {
       throw Error('latLng.lat or latLng.lng is not of type number');
     }
 
-    // https://developers.google.com/maps/documentation/maps-static/start
-    // specifies a single uppercase alphanumeric character from the set {A-Z, 0-9}.
-    // https://stackoverflow.com/questions/36876545/google-static-map-with-custom-icon-and-label
-    // "You can use up to five unique custom icons per request"
-    return `markers=color:red%7Clabel:${i}%7C${latLng.lat},${latLng.lng}`;
+    return `markers=color:red%7Clabel:${markerLabel}%7C${latLng.lat},${latLng.lng}`;
   });
 
   return coordinates.join('&');
+};
+
+const getPath = (towns: Town[]) => {
+  const coordinates = towns
+    .map(({ latLng }, i) => {
+      if (typeof latLng.lat !== 'number' || typeof latLng.lng !== 'number') {
+        throw Error('latLng.lat or latLng.lng is not of type number');
+      }
+
+      return `${latLng.lat},${latLng.lng}`;
+    })
+    .join('|');
+
+  return `path=color:0x0000ff|weight:5|${coordinates}`;
 };
 
 export const getStaticMapQueryParams = ({
@@ -34,11 +46,16 @@ export const getStaticMapQueryParams = ({
   staticMapWidth,
   staticMapHeight,
 }: Props): string => {
+  const path = getPath(towns);
   const markers = getMarkers(towns);
 
   const queryParms = [
     `size=${staticMapWidth}x${staticMapHeight}&maptype=roadmap&key=${apiKey}&format=png`,
   ];
+
+  if (path !== '') {
+    queryParms.push(path);
+  }
 
   if (markers !== '') {
     queryParms.push(markers);

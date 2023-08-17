@@ -1,9 +1,8 @@
 import React from 'react';
 import { Page, View, Document } from '@react-pdf/renderer';
 import StaticMap from './StaticMap';
-import { Town } from '@maps-directions/maps-directions';
+import { FrontTown as Town } from '@maps-directions/maps-directions';
 import PdfColumn from './PdfColumn';
-import { getStaticMapDimensions } from '../utils/static-map-query-params';
 
 interface Props {
   staticMapQueryParams: string;
@@ -37,8 +36,6 @@ const Pdf: React.FC<Props> = ({
   totalDistance,
 }) => {
   const groupedTowns = getGroupedTowns(towns);
-  const [width, height] = getStaticMapDimensions(staticMapQueryParams);
-  console.log('width', width, height);
 
   return (
     <Document>
