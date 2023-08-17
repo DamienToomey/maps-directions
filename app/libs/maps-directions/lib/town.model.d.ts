@@ -4,3 +4,6 @@ export interface Town {
     name: string;
     distance?: string;
 }
+export interface FrontTown extends Town {
+    markerLabel?: string;
+}
