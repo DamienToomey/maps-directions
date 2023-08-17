@@ -1,5 +1,5 @@
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import { Page, View, Document } from '@react-pdf/renderer';
 import StaticMap from './StaticMap';
 import { Town } from '@maps-directions/maps-directions';
 import PdfColumn from './PdfColumn';
@@ -10,17 +10,6 @@ interface Props {
   towns: Town[];
   totalDistance: string | undefined;
 }
-
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'column',
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1,
-  },
-});
 
 const MAX_TOWNS_PER_COLUMN = 35;
 
@@ -53,21 +42,28 @@ const Pdf: React.FC<Props> = ({
 
   return (
     <Document>
-      <Page orientation="landscape" size="A4" style={styles.page}>
+      <Page orientation="landscape" size="A4" style={{ margin: 10 }}>
         {/* TOFIX: index is not a good key */}
-        <View style={{ ...styles.section, flexDirection: 'row', gap: '4px' }}>
+        <View style={{ flexDirection: 'row', gap: '4px' }}>
           {groupedTowns.map((towns, index) => (
             <PdfColumn
               key={index}
               towns={towns}
               totalDistance={totalDistance}
+              columnOffset={groupedTowns[0].length * index}
             />
           ))}
         </View>
       </Page>
 
-      <Page orientation="landscape" size="A4" style={styles.page}>
-        <View style={styles.section}>
+      <Page orientation="landscape" size="A4">
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            flex: 1,
+          }}
+        >
           <StaticMap queryParams={staticMapQueryParams} mode="pdf" />
         </View>
       </Page>

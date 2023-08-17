@@ -47,7 +47,7 @@ export const StaticMap: React.FC<Props> = ({ queryParams, mode }) => {
       alt="Error loading debug map"
     ></img>
   ) : (
-    <PdfImage source={loadImageAsync} />
+    <PdfImage style={{ width: '50%', height: '50%' }} source={loadImageAsync} />
   );
 };
 
