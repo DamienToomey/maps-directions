@@ -4423,7 +4423,9 @@ class Hn extends Us {
       origin: r[0],
       destination: r[r.length - 1],
       travelMode: n,
-      waypoints: r.slice(1, r.length).map((i) => ({ location: i }))
+      waypoints: r.slice(1, r.length).map((i) => ({ location: i })),
+      avoidHighways: !0,
+      avoidTolls: !0
     };
     return await t.route(o);
   }
