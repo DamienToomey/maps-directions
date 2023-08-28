@@ -5,7 +5,6 @@ import { View } from '@react-pdf/renderer';
 
 interface Props {
   towns: Town[];
-  totalDistance: string | undefined;
   townIndexOffset: number;
 }
 

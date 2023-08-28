@@ -1,5 +1,5 @@
 import React from 'react';
-import { Page, View, Document } from '@react-pdf/renderer';
+import { Page, View, Document, Text } from '@react-pdf/renderer';
 import StaticMap from './StaticMap';
 import { FrontTown as Town } from '@maps-directions/maps-directions';
 import PdfColumn from './PdfColumn';
@@ -59,7 +59,6 @@ const Pdf: React.FC<Props> = ({
                 <PdfColumn
                   key={`page-${pageIndex}-column-${columnIndex}`}
                   towns={column}
-                  totalDistance={totalDistance}
                   townIndexOffset={pageOffset + columnOffset}
                 />
               );
@@ -77,6 +76,9 @@ const Pdf: React.FC<Props> = ({
           }}
         >
           <StaticMap queryParams={staticMapQueryParams} mode="pdf" />
+          <Text style={{ fontSize: '11px' }}>
+            Total Distance: {totalDistance}
+          </Text>
         </View>
       </Page>
     </Document>
