@@ -26,7 +26,7 @@ export class FrontMapsDirections extends MapsDirections<
       destination: towns[towns.length - 1],
       travelMode: travelMode,
       waypoints: towns
-        .slice(1, towns.length)
+        .slice(1, towns.length - 1)
         .map((town) => ({ location: town })),
       avoidHighways: true,
       avoidTolls: true,
@@ -51,10 +51,12 @@ export class FrontMapsDirections extends MapsDirections<
 
       const frontRoute = new FrontMapsDirections();
       const coordinates = frontRoute.getCoordinates(directionsResult);
-      const { towns, totalDistance } = await frontRoute.getOutput(coordinates);
+      const { towns } = await frontRoute.getOutput(coordinates);
       return {
         towns,
-        totalDistance,
+        // TOFIX: use totalDistance from getOutput when fixed
+        totalDistance:
+          directionsResult.routes[0].legs[0].distance?.text ?? 'undefined km',
         status,
       };
     } catch (error) {

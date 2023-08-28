@@ -68,7 +68,7 @@ export const Page: React.FC = () => {
                   totalDistance={totalDistance}
                 />
               }
-              fileName="somename.pdf"
+              fileName={`${towns[0].name}-${towns[towns.length - 1].name}`}
             >
               {({ blob, url, loading, error }) =>
                 loading ? 'Loading document...' : 'Download now!'

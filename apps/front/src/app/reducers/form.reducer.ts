@@ -47,6 +47,7 @@ export interface FormState {
   travelMode: TravelMode;
 }
 
+// TODO: Rename INITIAL_FORM_STATE to INITIAL_STATE
 export const INITIAL_FORM_STATE: FormState = {
   apiKey: undefined,
   towns: [],

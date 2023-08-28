@@ -74,10 +74,13 @@ class BackMapsDirections extends MapsDirections<
       );
 
       const coordinates = mapsDirections.getCoordinates(directionsResult);
-      const { towns, totalDistance } = await mapsDirections.getOutput(
-        coordinates
-      );
-      return { towns, totalDistance };
+      const { towns } = await mapsDirections.getOutput(coordinates);
+      // TOFIX: use totalDistance from getOutput when fixed
+      return {
+        towns,
+        totalDistance:
+          directionsResult.routes[0].legs[0].distance?.text ?? 'undefined km',
+      };
     } catch (error) {
       throw Error(`Error" ${error}`);
     }
@@ -90,7 +93,6 @@ const main = async () => {
     // 'Pl. du Ralliement, 49100 Angers',
     'Louviers France',
     'Saint Etienne du Vauvray France',
-    'Le Mesnil Jourdain France',
     // 'Sommaisne France',
     // 'Bar le duc France',
   ];
@@ -105,8 +107,12 @@ const main = async () => {
   );
 
   for (let i = 0; i < towns.length; i++) {
-    const { name, distance } = towns[i];
-    console.log(name, distance ? distance : '');
+    const { name } = towns[i];
+    {
+      /* TOFIX: I am commenting out the distance feature for now as the distances are incorrect (as the crow flies I think) */
+    }
+    // console.log(name, distance ? distance : '');
+    console.log(name);
   }
 
   console.log('Total distance', totalDistance);

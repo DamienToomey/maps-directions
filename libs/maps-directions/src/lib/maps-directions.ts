@@ -76,6 +76,7 @@ export abstract class MapsDirections<
     return { towns: newTowns, totalDistance: `${totalDistance.toFixed(2)}km` };
   }
 
+  // TOFIX: fix how distances are computed (it should not be how the crow flies)
   public async getOutput(
     latLngs: K[]
   ): Promise<{ towns: Town[]; totalDistance: string }> {

@@ -40,8 +40,9 @@ export const PdfColumn: React.FC<Props> = ({ towns, townIndexOffset }) => {
             style={{ flexDirection: 'row' }}
           >
             <Text style={{ fontSize: '11px' }}>
-              {townIndex}. {town.name}{' '}
-              {town.distance ? `(${town.distance})` : ''}{' '}
+              {townIndex}. {town.name}
+              {/* TOFIX: I am commenting out the distance feature for now as the distances are incorrect (as the crow flies I think) */}
+              {/* {town.distance ? `(${town.distance})` : ''}{' '} */}
             </Text>
             <Text
               style={{
