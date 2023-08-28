@@ -36,9 +36,17 @@ The static map is not always zoomed/centered properly, e.g. on the route
 - Fos-sur-Mer
 - Marseille
 
-### Enhancement
+### Bug5
+
+To many digits in total distance
+
+### Enhancement1
 
 Customize the display order of towns to ease readibility depending on the size of the pouch in which the list of towns is placed.
+
+### Enhancement2
+
+Is there a way to not rely on the overview polyline knowing that the granularity of the result is not always the same depending on the number of stops?
 
 ### Run the app locally with React
 
