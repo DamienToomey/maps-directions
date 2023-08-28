@@ -5,6 +5,7 @@ import {
   TravelMode,
   DirectionsRequest,
   GeocodeResult,
+  TravelRestriction,
 } from '@googlemaps/google-maps-services-js';
 import { MapsDirections } from './maps-directions';
 
@@ -42,6 +43,7 @@ class BackMapsDirections extends MapsDirections<
         key: this.getApiKey(),
         mode: travelMode,
         waypoints,
+        avoid: [TravelRestriction.highways, TravelRestriction.tolls],
       },
     });
 

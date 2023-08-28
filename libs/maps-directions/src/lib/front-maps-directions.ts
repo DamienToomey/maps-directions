@@ -28,6 +28,8 @@ export class FrontMapsDirections extends MapsDirections<
       waypoints: towns
         .slice(1, towns.length)
         .map((town) => ({ location: town })),
+      avoidHighways: true,
+      avoidTolls: true,
     };
 
     return await directionsService.route(request);
