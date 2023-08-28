@@ -76,10 +76,15 @@ class BackMapsDirections extends MapsDirections<
       const coordinates = mapsDirections.getCoordinates(directionsResult);
       const { towns } = await mapsDirections.getOutput(coordinates);
       // TOFIX: use totalDistance from getOutput when fixed
+
+      const legs = directionsResult.routes[0].legs;
+      const totalDistance = legs
+        .map((a) => (a.distance?.value ?? 0) / 1000)
+        .reduce((a, b) => a + b, 0);
+
       return {
         towns,
-        totalDistance:
-          directionsResult.routes[0].legs[0].distance?.text ?? 'undefined km',
+        totalDistance: `${totalDistance} km`,
       };
     } catch (error) {
       throw Error(`Error" ${error}`);

@@ -52,11 +52,16 @@ export class FrontMapsDirections extends MapsDirections<
       const frontRoute = new FrontMapsDirections();
       const coordinates = frontRoute.getCoordinates(directionsResult);
       const { towns } = await frontRoute.getOutput(coordinates);
+
+      const legs = directionsResult.routes[0].legs;
+      const totalDistance = legs
+        .map((a) => (a.distance?.value ?? 0) / 1000)
+        .reduce((a, b) => a + b, 0);
+
       return {
         towns,
         // TOFIX: use totalDistance from getOutput when fixed
-        totalDistance:
-          directionsResult.routes[0].legs[0].distance?.text ?? 'undefined km',
+        totalDistance: `${totalDistance} km`,
         status,
       };
     } catch (error) {
