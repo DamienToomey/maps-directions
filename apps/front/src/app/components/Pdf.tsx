@@ -10,7 +10,7 @@ interface Props {
   totalDistance: string | undefined;
 }
 
-const MAX_COLUMNS_PER_PAGE = 3;
+const MAX_COLUMNS_PER_PAGE = 4;
 const MAX_TOWNS_PER_COLUMN = 35;
 
 function splitArray<T>(towns: T[], n: number): T[][] {

@@ -26,6 +26,10 @@ The distances between towns is incorrect.
 
 The path between 2 points is a straight line (as the crow flies) which is incorrect.
 
+### Enhancement
+
+Customize the display order of towns to ease readibility depending on the size of the pouch in which the list of towns is placed.
+
 ### Run the app locally with React
 
 ```bash
