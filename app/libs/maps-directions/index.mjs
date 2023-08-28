@@ -4362,6 +4362,7 @@ class Us {
       };
     }), totalDistance: `${n.toFixed(2)}km` };
   }
+  // TOFIX: fix how distances are computed (it should not be how the crow flies)
   async getOutput(r) {
     const n = await this.getTowns(r);
     return this.addDistanceAttribute(n);
@@ -4423,7 +4424,7 @@ class Hn extends Us {
       origin: r[0],
       destination: r[r.length - 1],
       travelMode: n,
-      waypoints: r.slice(1, r.length).map((i) => ({ location: i })),
+      waypoints: r.slice(1, r.length - 1).map((i) => ({ location: i })),
       avoidHighways: !0,
       avoidTolls: !0
     };
@@ -4431,10 +4432,11 @@ class Hn extends Us {
   }
   async main(r, n) {
     try {
-      const t = await this.findRoute(r, n), o = t.status, i = new Hn(), a = i.getCoordinates(t), { towns: c, totalDistance: s } = await i.getOutput(a);
+      const t = await this.findRoute(r, n), o = t.status, i = new Hn(), a = i.getCoordinates(t), { towns: c } = await i.getOutput(a);
       return {
         towns: c,
-        totalDistance: s,
+        // TOFIX: use totalDistance from getOutput when fixed
+        totalDistance: t.routes[0].legs[0].distance?.text ?? "undefined km",
         status: o
       };
     } catch (t) {
