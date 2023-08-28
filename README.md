@@ -2,7 +2,7 @@
 
 https://damientoomey.github.io/maps-directions/app/apps/front
 
-### Note (TOFIX)
+### Bug1
 
 Since the implementation uses the points from the Google Maps `overview_polyline` (i.e. the blue line displayed on Google Maps when searching for directions), in the current app, the 2 searches below will not give the same granularity for the route between Rouen and Toulouse:
 
@@ -17,6 +17,10 @@ Since the implementation uses the points from the Google Maps `overview_polyline
   - Toulouse
 
 `search2` will be more detailed (i.e. more towns between Rouen and Toulouse) because Google Maps returns a greater number of points in the polyline between Rouen and Toulouse in ` search2` compared to `search1`.
+
+### Bug2
+
+The distances between towns is incorrect.
 
 ### Run the app locally with React
 
