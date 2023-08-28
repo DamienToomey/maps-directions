@@ -6,7 +6,7 @@ import { View } from '@react-pdf/renderer';
 interface Props {
   towns: Town[];
   totalDistance: string | undefined;
-  columnOffset: number;
+  townIndexOffset: number;
 }
 
 const getTownIndex = (i: number, columnOffset: number) => {
@@ -27,12 +27,12 @@ Font.register({
   ],
 });
 
-export const PdfColumn: React.FC<Props> = ({ towns, columnOffset }) => {
+export const PdfColumn: React.FC<Props> = ({ towns, townIndexOffset }) => {
   return (
     <View style={{ flexDirection: 'column', gap: 4 }}>
       {/* TOFIX: index is not a good key */}
       {towns.map((town, i) => {
-        const townIndex = getTownIndex(i, columnOffset);
+        const townIndex = getTownIndex(i, townIndexOffset);
         const prefix = town.markerLabel ? `(${town.markerLabel})` : '';
         return (
           <View
