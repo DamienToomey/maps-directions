@@ -22,6 +22,10 @@ Since the implementation uses the points from the Google Maps `overview_polyline
 
 The distances between towns is incorrect.
 
+### Bug3
+
+The path between 2 points is a straight line (as the crow flies) which is incorrect.
+
 ### Run the app locally with React
 
 ```bash
