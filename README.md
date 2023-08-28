@@ -26,6 +26,16 @@ The distances between towns is incorrect.
 
 The path between 2 points is a straight line (as the crow flies) which is incorrect.
 
+### Bug4
+
+The static map is not always zoomed/centered properly, e.g. on the route
+
+- Palavas-les-Flots
+- La Grande-Motte
+- Saintes-Maries-de-la-mer
+- Fos-sur-Mer
+- Marseille
+
 ### Enhancement
 
 Customize the display order of towns to ease readibility depending on the size of the pouch in which the list of towns is placed.
